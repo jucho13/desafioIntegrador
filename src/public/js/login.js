@@ -19,7 +19,7 @@ form.addEventListener('submit',e=>{
                 console.log("Cookies generadas:");
                 console.log(document.cookie);
                 alert("Login realizado con exito!");
-                window.location.replace('/');
+                window.location.replace('/students');
             });
         } else if (result.status === 401){
             console.log(result);

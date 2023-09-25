@@ -28,6 +28,23 @@ export const generateJWToken = (user) => {
     return jwt.sign({user}, PRIVATE_KEY, {expiresIn: '120s'}); //-->Token generado con duracion en segundos.
 };
 
+export const authToken = (req, res, next) => {
+    // const token = req.token;
+    const token= req.cookies.jwtCookieToken;
+    if (!token) {
+        return res.status(401).send({error: "User not authenticated or missing token."});
+    }
+    //Validar token
+    jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+        if (error) return res.status(403).send({error: "Token invalid, Unauthorized!"});
+        //Token OK
+        req.user = credentials.user;
+        console.log(req.user);
+        next();
+    });
+};
+
+
 //Util para llamados más controlados de los strategy de Passport.
 export const passportCall = (strategy) => {
     return async (req, res, next) => {
